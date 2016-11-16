@@ -711,13 +711,59 @@
                                             </constraints>
                                         </view>
                                     </tabViewItem>
-                                    <tabViewItem label="View" identifier="2" id="vR9-vR-FMg">
+                                    <tabViewItem label="Command" identifier="2" id="vR9-vR-FMg">
                                         <view key="view" id="FvY-Ca-2e4">
                                             <rect key="frame" x="10" y="33" width="434" height="208"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bLC-JA-slB">
+                                                    <rect key="frame" x="15" y="188" width="129" height="17"/>
+                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Target Display Mode" id="iLf-LW-uFC">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                                <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hGq-bR-EDY">
+                                                    <rect key="frame" x="317" y="183" width="103" height="26"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="100" id="MVw-MT-54t"/>
+                                                    </constraints>
+                                                    <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" completes="NO" numberOfVisibleItems="3" id="nri-ze-DAm">
+                                                        <font key="font" metaFont="system"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        <objectValues>
+                                                            <string></string>
+                                                            <string>On</string>
+                                                            <string>Off</string>
+                                                        </objectValues>
+                                                    </comboBoxCell>
+                                                </comboBox>
+                                                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wu5-XM-3dj">
+                                                    <rect key="frame" x="172" y="10" width="71" height="32"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <buttonCell key="cell" type="push" title="Send" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="sGS-9W-GSK">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="handleSendButton:" target="XfG-lQ-9wD" id="brC-pS-rcR"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="bLC-JA-slB" firstAttribute="leading" secondItem="FvY-Ca-2e4" secondAttribute="leading" constant="17" id="CUe-Go-LOA"/>
+                                                <constraint firstItem="hGq-bR-EDY" firstAttribute="centerY" secondItem="bLC-JA-slB" secondAttribute="centerY" id="LeM-id-KJo"/>
+                                                <constraint firstAttribute="trailing" secondItem="hGq-bR-EDY" secondAttribute="trailing" constant="17" id="igP-l4-wZ6"/>
+                                                <constraint firstItem="bLC-JA-slB" firstAttribute="top" secondItem="FvY-Ca-2e4" secondAttribute="top" constant="3" id="rJg-Qs-OaR"/>
+                                            </constraints>
                                         </view>
                                     </tabViewItem>
                                 </tabViewItems>
+                                <connections>
+                                    <outlet property="delegate" destination="XfG-lQ-9wD" id="9v2-GB-fSK"/>
+                                </connections>
                             </tabView>
                         </subviews>
                         <constraints>
@@ -730,6 +776,7 @@
                     <connections>
                         <outlet property="ipTextField" destination="HnQ-gi-3wQ" id="hHc-wW-FJy"/>
                         <outlet property="tabView" destination="ZCk-zQ-5Qu" id="6BW-vg-Tc7"/>
+                        <outlet property="tdmComboBox" destination="hGq-bR-EDY" id="SXG-cy-fQ8"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

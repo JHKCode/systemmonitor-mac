@@ -8,15 +8,29 @@
 
 import Cocoa
 
+
+var iCloudDirURL: URL {
+    if #available(OSX 10.12, *) {
+        return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Mobile Documents/com~apple~CloudDocs")
+    } else {
+        return (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.deletingLastPathComponent().appendingPathComponent("Library/Mobile Documents/com~apple~CloudDocs"))!
+    }
+}
+
+
 class ViewController: NSViewController {
     
     @IBOutlet weak var tabView: NSTabView!
     
     @IBOutlet weak var ipTextField: NSTextField!
     
+    @IBOutlet weak var tdmComboBox: NSComboBox!
+    
     
     fileprivate var timer: Timer?
     
+    
+    // ip addr
     fileprivate var ipAddrs = Dictionary<String, String>()
     
     fileprivate var ipAddrsString: String {
@@ -28,14 +42,15 @@ class ViewController: NSViewController {
     }
     
     fileprivate var ipAddrFileURL: URL {
-        let iCloudDirURL: URL
-        if #available(OSX 10.12, *) {
-            iCloudDirURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Mobile Documents/com~apple~CloudDocs")
-        } else {
-            iCloudDirURL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.deletingLastPathComponent().appendingPathComponent("Library/Mobile Documents/com~apple~CloudDocs"))!
-        }
-        
         return iCloudDirURL.appendingPathComponent("ipaddr.txt")
+    }
+    
+    
+    // command
+    fileprivate var commands = Dictionary<String, String>()
+    
+    fileprivate var commandFileURL: URL {
+        return iCloudDirURL.appendingPathComponent("command.txt")
     }
     
     
@@ -61,12 +76,45 @@ class ViewController: NSViewController {
 }
 
 
+// MARK: UI Actions
+
+
+extension ViewController: NSTabViewDelegate {
+
+    @IBAction func handleSendButton(_ sender: NSButton) {
+        if saveCommands() == false {
+            print("save command failed")
+        }
+    }
+ 
+    
+    func tabView(_ tabView: NSTabView, didSelect tabViewItem: NSTabViewItem?) {
+        guard let itemLabel = tabViewItem?.label else {
+            return
+        }
+        
+        switch itemLabel {
+            case "Command":
+                setupCommand()
+                break
+            
+            default:
+                break
+        }
+    }
+
+}
+
+
+// MARK: Timer
+
+
 extension ViewController {
     
     fileprivate func setupTimer() {
         timer?.invalidate()
         
-        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(handleTimer), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(handleTimer), userInfo: nil, repeats: true)
     }
     
     
@@ -89,6 +137,9 @@ extension ViewController {
 }
 
 
+// MARK: IP Address
+
+
 extension ViewController {
     
     fileprivate func loadPrevIPAddresses() -> Dictionary<String, String>? {
@@ -96,16 +147,7 @@ extension ViewController {
             return nil
         }
         
-        
-        var ips = Dictionary<String, String>()
-        
-        for (serviceName, ipAddr) in prevIPAddrs {
-            if let service = serviceName as? String, let ip = ipAddr as? String {
-                ips[service] = ip
-            }
-        }
-        
-        return ips
+        return prevIPAddrs as? Dictionary
     }
     
     
@@ -132,6 +174,53 @@ extension ViewController {
         
         if ips.write(to: ipAddrFileURL, atomically: true) == false {
             return false
+        }
+        
+        return true
+    }
+    
+}
+
+
+// MARK: Command
+
+
+extension ViewController {
+
+    func setupCommand() {
+        if let cmds = loadPrevCommand() {
+            commands = cmds
+        }
+        
+        updateCommandView()
+    }
+    
+    
+    func loadPrevCommand() -> Dictionary<String, String>? {
+        guard let prevCommands = NSDictionary(contentsOf: commandFileURL) else {
+            return nil
+        }
+        
+        return prevCommands as? Dictionary
+   }
+    
+    
+    func updateCommandView() {
+        if let tdmCommand = commands["TDM"] {
+            tdmComboBox.selectItem(withObjectValue: tdmCommand)
+        }
+    }
+    
+    
+    func saveCommands() -> Bool {
+        if let tdmCommand = tdmComboBox.objectValueOfSelectedItem as? String, tdmCommand.isEmpty == false {
+            commands["TDM"] = tdmCommand
+        }
+        
+        if commands.isEmpty == false {
+            if (commands as NSDictionary).write(to: commandFileURL, atomically: true) == false {
+                return false
+            }
         }
         
         return true
