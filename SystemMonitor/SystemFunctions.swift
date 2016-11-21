@@ -89,8 +89,10 @@ extension System {
             return nil
         }
         
+        let networks = ["Ethernet", "Wi-Fi"]
+        
         let services: [String] = result.components(separatedBy: "\n").flatMap {
-            if $0 == "Wi-Fi" {
+            if networks.contains($0) {
                 return $0
             }
             

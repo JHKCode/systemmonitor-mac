@@ -683,20 +683,20 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="SystemMonitor" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="99"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <tabView translatesAutoresizingMaskIntoConstraints="NO" id="ZCk-zQ-5Qu">
-                                <rect key="frame" x="13" y="2" width="454" height="254"/>
+                                <rect key="frame" x="13" y="2" width="454" height="83"/>
                                 <font key="font" metaFont="system"/>
                                 <tabViewItems>
                                     <tabViewItem label="Monitor" identifier="1" id="ID4-L6-sNq">
                                         <view key="view" id="aRa-zo-d2Q">
-                                            <rect key="frame" x="10" y="33" width="434" height="208"/>
+                                            <rect key="frame" x="10" y="33" width="434" height="37"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="HnQ-gi-3wQ">
-                                                    <rect key="frame" x="15" y="188" width="404" height="17"/>
+                                                    <rect key="frame" x="15" y="17" width="404" height="17"/>
                                                     <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" title="Multiline Label" id="NaD-Lx-8WU">
                                                         <font key="font" metaFont="system"/>
                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -705,6 +705,7 @@
                                                 </textField>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="HnQ-gi-3wQ" secondAttribute="bottom" constant="17" id="Hvw-GO-OBT"/>
                                                 <constraint firstItem="HnQ-gi-3wQ" firstAttribute="leading" secondItem="aRa-zo-d2Q" secondAttribute="leading" constant="17" id="Pbs-Vs-4uq"/>
                                                 <constraint firstItem="HnQ-gi-3wQ" firstAttribute="top" secondItem="aRa-zo-d2Q" secondAttribute="top" constant="3" id="Zij-fo-m81"/>
                                                 <constraint firstAttribute="trailing" secondItem="HnQ-gi-3wQ" secondAttribute="trailing" constant="17" id="d2T-CF-Ahc"/>

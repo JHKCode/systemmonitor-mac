@@ -11,9 +11,9 @@ import Cocoa
 
 var iCloudDirURL: URL {
     if #available(OSX 10.12, *) {
-        return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Mobile Documents/com~apple~CloudDocs")
+        return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Mobile Documents/com~apple~CloudDocs/Monitoring")
     } else {
-        return (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.deletingLastPathComponent().appendingPathComponent("Library/Mobile Documents/com~apple~CloudDocs"))!
+        return (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last?.deletingLastPathComponent().appendingPathComponent("Library/Mobile Documents/com~apple~CloudDocs/Monitoring"))!
     }
 }
 
@@ -42,7 +42,11 @@ class ViewController: NSViewController {
     }
     
     fileprivate var ipAddrFileURL: URL {
-        return iCloudDirURL.appendingPathComponent("ipaddr.txt")
+        guard let hostName = Host.current().localizedName else {
+            return iCloudDirURL.appendingPathComponent("IPAddrs.txt")
+        }
+
+        return iCloudDirURL.appendingPathComponent(hostName + "-IPAddrs.txt")
     }
     
     
@@ -56,6 +60,7 @@ class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         
         if let ips = loadPrevIPAddresses() {
             ipAddrs = ips
@@ -114,7 +119,7 @@ extension ViewController {
     fileprivate func setupTimer() {
         timer?.invalidate()
         
-        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(handleTimer), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(handleTimer), userInfo: nil, repeats: true)
     }
     
     
